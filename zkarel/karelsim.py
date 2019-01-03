@@ -4,17 +4,17 @@ from functools import partial
 
 try:
     import Tkinter as tk
-except:
+except ImportError:
     import tkinter as tk
 
 try:
     import tkMessageBox as tkmb
-except:
+except ImportError:
     import tkinter.messagebox as tkmb
 
 try:
     import tkFileDialog as tkfd
-except:
+except ImportError:
     import tkinter.filedialog as tkfd
 
 import random
