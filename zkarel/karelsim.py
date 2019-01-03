@@ -256,7 +256,7 @@ class TkView(object):
                                                   tag="beeper",
                                                   anchor=tk.NW)
                         count = fg.get_beepers((col, row))
-                        self._canvas.create_text(cx, cy, tag="beeper",
+                        self._canvas.create_text(cx, cy, tag="beeper", font="Sans 12",
                                                  text=str(count))
 
             karel = fg.karel
