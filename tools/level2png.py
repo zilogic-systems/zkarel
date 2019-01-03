@@ -1,10 +1,10 @@
 from __future__ import print_function
+from zkarel import karelsim
 
 import yaml
-import karelsim
 import subprocess
 
-levels = yaml.load(open("levels.yml"))
+levels = yaml.load(open("zkarel/levels.yml"))
 view = karelsim.TkView(levels)
 
 for i, level in enumerate(levels):
