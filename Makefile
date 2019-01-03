@@ -3,7 +3,7 @@ version = 0.1.0
 KAREL_VERSION = $(version)
 export KAREL_VERSION
 
-all:
+all: levels
 
 levels: 
 	python3 tools/level2json.py
