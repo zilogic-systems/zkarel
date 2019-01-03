@@ -17,7 +17,6 @@ try:
 except ImportError:
     import tkinter.filedialog as tkfd
 
-import random
 import json
 import time
 import socket
@@ -471,7 +470,7 @@ class Karel(object):
 
     def right_is_clear(self):
         next_velocity = self.velocity
-        for i in range(3):
+        for _ in range(3):
             next_velocity = self._next_velocity(next_velocity)
         return not self._level.is_wall(self.pos, next_velocity)
 
@@ -504,8 +503,6 @@ class Karel(object):
 
 
 def run_command(view, cmd):
-    val = None
-
     actions = ["move", "turn_left", "pick_beeper", "put_beeper"]
     delayed_actions = ["move", "turn_left"]
     sensors = ["front_is_clear", "left_is_clear", "right_is_clear",
