@@ -491,16 +491,17 @@ class Karel(object):
         return self.velocity == VEL_WEST
 
     def any_beepers_in_beeper_bag(self):
-        return bool(self._beepers)
+        return bool(self.beepers)
 
     def no_beepers_in_beeper_bag(self):
-        return not bool(self._beepers)
+        return not bool(self.beepers)
 
     def avenue(self):
         return self.pos[0]
 
     def street(self):
         return self.pos[1]
+
 
 def run_command(view, cmd):
     val = None
