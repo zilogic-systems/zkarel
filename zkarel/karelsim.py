@@ -192,7 +192,7 @@ class TkView(object):
 
     def _on_screenshot(self):
         psfilename = tkfd.asksaveasfilename(defaultextension=".ps")
-        screenshot(psfilename)
+        self.screenshot(psfilename)
 
     def _on_quit(self):
         exit(0)
