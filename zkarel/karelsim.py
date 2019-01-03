@@ -47,7 +47,7 @@ def get_img_path(filename):
 
 
 def circle(canvas, x, y, r, **kwargs):
-    id = canvas.create_oval(x-r,y-r,x+r,y+r,fill="grey", **kwargs)
+    id = canvas.create_oval(x - r, y - r, x + r, y + r, fill="grey", **kwargs)
     return id
 
 
@@ -58,7 +58,7 @@ class ScrollableCanvas(tk.Frame):
         self.hbar = tk.Scrollbar(self, orient=tk.HORIZONTAL)
         self.hbar.pack(side=tk.BOTTOM, fill=tk.X)
         self.hbar.config(command=self.canvas.xview)
-        self.vbar = tk.Scrollbar(self,orient=tk.VERTICAL)
+        self.vbar = tk.Scrollbar(self, orient=tk.VERTICAL)
         self.vbar.pack(side=tk.RIGHT, fill=tk.Y)
         self.vbar.config(command=self.canvas.yview)
         self.canvas.config(width=300, height=300)
@@ -340,8 +340,8 @@ class Level(object):
 
         for row in range(self.current.nrows):
             for col in range(self.current.ncols):
-                if (self.current.get_beepers(Position(row, col))
-                    != self.goal.get_beepers(Position(row, col))):
+                if (self.current.get_beepers(Position(row, col)) !=
+                        self.goal.get_beepers(Position(row, col))):
                     world_beepers = False
 
         return (karel_pos, karel_velocity, karel_beepers, world_beepers)
