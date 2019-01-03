@@ -163,7 +163,9 @@ static inline void stop()
 	karel_send_command("stop");
 }
 
-#define repeat(n)  int i ## __LINE__ = n; while ((i ## __LINE__)--)
+#define KAREL_PASTER(x, y) x ## y
+#define KAREL_GETVAR(var, line) KAREL_PASTER(var, line)
+#define repeat(n)  int KAREL_GETVAR(i, __LINE__) = n; while (KAREL_GETVAR(i, __LINE__)--)
 
 
 #endif /* KAREL_H */
