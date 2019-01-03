@@ -165,6 +165,8 @@ class TkView(object):
                          + self._border_width * 2
                          + self._wall_width)
 
+        canvas_height *= 2
+
         return canvas_width, canvas_height
 
     def _start_level(self):
@@ -204,67 +206,69 @@ class TkView(object):
         CS = self.CS
         CC = self.CC
         self._canvas.delete("bg")
+        offset = 0
 
-        for row in range(self._level.current.nrows):
-            for col in range(self._level.current.ncols):
-                topx = col * CS + self._border_width + self._wall_width
-                topy = row * CS + self._border_width + self._wall_width
-                cx = topx + CC
-                cy = topy + CC
+        for bg in (self._level.current, self._level.goal):
+            for row in range(bg.nrows):
+                for col in range(bg.ncols):
+                    topx = col * CS + self._border_width + self._wall_width
+                    topy = offset + row * CS + self._border_width + self._wall_width
+                    cx = topx + CC
+                    cy = topy + CC
 
-                circle(self._canvas, cx, cy, 2, tag="bg")
+                    circle(self._canvas, cx, cy, 2, tag="bg")
+                    if bg.is_wall_direction((col, row), DIR_NORTH):
+                        self._canvas.create_line(topx, topy, topx + CS, topy, width=4,
+                                                 fill="brown", tag="bg")
 
-                gstate = self._level.current
+                    if bg.is_wall_direction((col, row), DIR_SOUTH):
+                        self._canvas.create_line(topx, topy + CS, topx + CS, topy + CS, width=4,
+                                                 fill="brown", tag="bg")
 
-                if gstate.is_wall_direction((col, row), DIR_NORTH):
-                    self._canvas.create_line(topx, topy, topx + CS, topy, width=4,
-                                             fill="brown", tag="bg")
+                    if bg.is_wall_direction((col, row), DIR_WEST):
+                        self._canvas.create_line(topx, topy, topx, topy + CS, width=4,
+                                                 fill="brown", tag="bg")
 
-                if gstate.is_wall_direction((col, row), DIR_SOUTH):
-                    self._canvas.create_line(topx, topy + CS, topx + CS, topy + CS, width=4,
-                                             fill="brown", tag="bg")
+                    if bg.is_wall_direction((col, row), DIR_EAST):
+                        self._canvas.create_line(topx + CS, topy, topx + CS, topy + CS, width=4,
+                                                 fill="brown", tag="bg")
 
-                if gstate.is_wall_direction((col, row), DIR_WEST):
-                    self._canvas.create_line(topx, topy, topx, topy + CS, width=4,
-                                             fill="brown", tag="bg")
-
-                if gstate.is_wall_direction((col, row), DIR_EAST):
-                    self._canvas.create_line(topx + CS, topy, topx + CS, topy + CS, width=4,
-                                             fill="brown", tag="bg")
+            offset += self._level.current.nrows * CS + self._border_width + self._wall_width
 
     def _draw_foreground(self):
         CS = self.CS
         CC = self.CC
         self._canvas.delete("karel")
         self._canvas.delete("beeper")
+        offset = 0
 
-        gstate = self._level.current
+        for fg in (self._level.current, self._level.goal):
+            for row in range(self._level.current.nrows):
+                for col in range(self._level.current.ncols):
+                    topx = col * CS + self._border_width
+                    topy = offset + row * CS + self._border_width
+                    cx = topx + CC
+                    cy = topy + CC
 
-        for row in range(self._level.current.nrows):
-            for col in range(self._level.current.ncols):
-                topx = col * CS + self._border_width
-                topy = row * CS + self._border_width
-                cx = topx + CC
-                cy = topy + CC
+                    if fg.has_beeper((col, row)):
+                        self._canvas.create_image(topx, topy,
+                                                  image=self._beeper_image,
+                                                  tag="beeper",
+                                                  anchor=tk.NW)
+                        count = fg.get_beepers((col, row))
+                        self._canvas.create_text(cx, cy, tag="beeper",
+                                                 text=str(count))
 
-                if gstate.has_beeper((col, row)):
-                    self._canvas.create_image(topx, topy,
-                                              image=self._beeper_image,
-                                              tag="beeper",
-                                              anchor=tk.NW)
-                    count = gstate.get_beepers((col, row))
-                    self._canvas.create_text(cx, cy, tag="beeper",
-                                             text=str(count))
+            karel = fg.karel
+            karel_pos = karel.pos
+            topx = karel_pos.x * CS + self._border_width
+            topy = offset + karel_pos.y * CS + self._border_width
 
+            direction = VELOCITY_DIR.index(karel.velocity)
+            self._canvas.create_image(topx, topy, image=self._karel_images[direction],
+                                      tag="karel", anchor=tk.NW)
 
-        karel = gstate.karel
-        karel_pos = karel.pos
-        topx = karel_pos.x * CS + self._border_width
-        topy = karel_pos.y * CS + self._border_width
-
-        direction = VELOCITY_DIR.index(karel.velocity)
-        self._canvas.create_image(topx, topy, image=self._karel_images[direction],
-                                  tag="karel", anchor=tk.NW)
+            offset += self._level.current.nrows * CS + self._border_width + self._wall_width
 
     def update(self):
         self._draw_foreground()
