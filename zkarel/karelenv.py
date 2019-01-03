@@ -1,7 +1,7 @@
 from distutils.dir_util import copy_tree
-import pkg_resources
 import os
 import sys
+import pkg_resources
 
 def err(msg):
     print("{}: {}".format(sys.argv[0], msg), file=sys.stderr)
@@ -13,11 +13,12 @@ def main():
     else:
         lang = sys.argv[1]
 
-    supported_lang = ("python",)
+    supported_lang = ("python", "clang")
 
     if lang not in supported_lang:
         err("Unsupported language '{}'".format(lang))
-    
-    wdir = pkg_resources.resource_filename(__name__, os.path.join("workspace", lang))
+
+    wdir = os.path.join("workspace", lang)
+    wdir = pkg_resources.resource_filename(__name__, wdir)
     copy_tree(wdir, os.getcwd())
     
