@@ -1,9 +1,8 @@
 from setuptools import setup
-import os
 
 setup(
     name = "zkarel",
-    version = os.getenv("KAREL_VERSION"),
+    version = open("version.txt").read().strip(),
     author = "Vijay Kumar",
     author_email = "code@zilogic.com",
     description = "A Karel like environment for learning programming.",

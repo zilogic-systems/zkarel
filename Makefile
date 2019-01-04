@@ -1,9 +1,9 @@
-version = 0.1.0
-
-KAREL_VERSION = $(version)
-export KAREL_VERSION
+version = $(shell cat version.txt)
 
 all: levels
+
+sdist: levels
+	python3 setup.py sdist
 
 deb: levels
 	rm -fr build-deb
@@ -24,11 +24,11 @@ install: levels
 	pip3 install --user .
 
 clean:
+	python setup.py clean
 	rm -f zkarel/levels.json
-	rm -fr zkarel.egg-info
 	rm -fr build-deb
-	rm -fr build
 	rm -f *.deb
 
 distclean: clean
 	find . -name "*~" -delete
+	rm -fr dist
