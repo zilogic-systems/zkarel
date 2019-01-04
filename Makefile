@@ -26,6 +26,9 @@ install: levels
 clean:
 	rm -f zkarel/levels.json
 	rm -fr zkarel.egg-info
+	rm -fr build-deb
+	rm -fr build
+	rm -f *.deb
 
 distclean: clean
 	find . -name "*~" -delete
